@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>화환 리본문구 생성기</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 20px;
+    }
+    select, input, button {
+      margin: 10px;
+      padding: 8px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h2>화환 리본문구 생성기</h2>
+  <div>
+    <label>행사 종류:
+      <select id="occasion">
+        <option value="funeral">부고</option>
+        <option value="celebration">축하</option>
+      </select>
+    </label>
+    <label>보내는 이:
+      <input type="text" id="sender" placeholder="예: 홍길동">
+    </label>
+    <button onclick="generate()">리본문구 생성</button>
+  </div>
+  <canvas id="wreathCanvas" width="400" height="600"></canvas>
+
+  <script>
+    function generate() {
+      const canvas = document.getElementById('wreathCanvas');
+      const ctx = canvas.getContext('2d');
+      const occasion = document.getElementById('occasion').value;
+      const sender = document.getElementById('sender').value || '보내는 이';
+      const message = occasion === 'funeral' ? '삼가 고인의 명복을 빕니다' : '진심으로 축하합니다';
+      const image = new Image();
+      image.onload = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#000";
+        ctx.font = "20px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(sender, 80, 150);  // 왼쪽 리본 위치
+        ctx.fillText(message, 320, 150);  // 오른쪽 리본 위치
+      };
+      image.src = occasion + "-wreath.png"; // 이미지 파일명
+    }
+  </script>
+</body>
+</html>
