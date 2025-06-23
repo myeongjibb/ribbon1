@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>화환 리본문구 추천 서비스</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background: #f4f4f4;
+            padding: 40px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        form {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        label, select, input {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        canvas {
+            display: block;
+            margin: 30px auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🌸 화환 리본문구 추천 🌸</h1>
+
+<form id="wreathForm">
+    <label for="occasion">상황 (부고/축하)</label>
+    <select id="occasion">
+        <option value="funeral">부고</option>
+        <option value="celebration">축하</option>
+    </select>
+
+    <label for="leftText">보내는 이 (왼쪽 리본)</label>
+    <input type="text" id="leftText" placeholder="예: ○○회사 일동">
+
+    <label for="rightText">리본문구 (오른쪽 리본)</label>
+    <input type="text" id="rightText" placeholder="예: 삼가 고인의 명복을 빕니다">
+
+    <button type="submit">이미지 생성</button>
+</form>
+
+<canvas id="resultCanvas" width="600" height="800"></canvas>
+
+<script>
+document.getElementById('wreathForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const occasion = document.getElementById('occasion').value;
+    const leftText = document.getElementById('leftText').value;
+    const rightText = document.getElementById('rightText').value;
+
+    createWreathImage(occasion, rightText, leftText);
+});
+
+function createWreathImage(occasion, rightText, leftText) {
+    const canvas = document.getElementById('resultCanvas');
+    const ctx = canvas.getContext('2d');
+    const wreathImage = new Image();
+
+    wreathImage.src = occasion === 'funeral' ? 'funeral-wreath.png' : 'celebration-wreath.png';
+
+    wreathImage.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(wreathImage, 0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 26px Malgun Gothic';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 2;
+
+        ctx.fillText(leftText, 130, 180);   // 왼쪽 리본
+        ctx.fillText(rightText, 470, 180);  // 오른쪽 리본
+    };
+}
+</script>
+
+</body>
+</html>
